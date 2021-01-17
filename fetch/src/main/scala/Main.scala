@@ -45,7 +45,7 @@ object Main extends App {
   
   while (true) {
     poll
-    Thread.sleep(500)
+    Thread.sleep(1000)
   }
 
   private def poll = Future {
