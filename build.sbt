@@ -27,8 +27,9 @@ lazy val dependencies = new {
   val jaxbApi = "javax.xml.bind" % "jaxb-api" % "2.3.1"
   val gtfsBindings = "com.google.transit" % "gtfs-realtime-bindings" % "0.0.4"
   val kafka = "org.apache.kafka" % "kafka-clients" % "2.7.0"
-  val awsSDK = "com.amazonaws" % "aws-java-sdk" % "1.11.46"
+  val awsSDK = "software.amazon.awssdk" % "s3" % "2.15.66"
   val commonsIO = "commons-io" % "commons-io" % "2.8.0"
+  val kafkaStreams = "org.apache.kafka" %% "kafka-streams-scala" % "2.7.0"
 }
 
 lazy val commonDependencies = Seq(
@@ -37,11 +38,12 @@ lazy val commonDependencies = Seq(
   dependencies.awsSDK,
   dependencies.gtfsBindings,
   dependencies.kafka,
-  dependencies.commonsIO
+  dependencies.commonsIO,
+  dependencies.kafkaStreams
 )
 
 lazy val root = (project in file("."))
-  .aggregate(fetch, parse)
+  .aggregate(fetch, parse, raw_file_sink)
   .settings(
     libraryDependencies ++= commonDependencies
   )
@@ -51,3 +53,6 @@ lazy val fetch = (project in file("fetch"))
 
 lazy val parse = (project in file("parse"))
   .settings(name := "parse", libraryDependencies ++= commonDependencies)
+
+lazy val raw_file_sink = (project in file("raw_file_sink"))
+  .settings(name := "raw_file_sink", libraryDependencies ++= commonDependencies)
